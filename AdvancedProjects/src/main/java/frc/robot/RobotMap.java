@@ -27,14 +27,14 @@ public class RobotMap {
   public static int leftDrivePort = 1;
   public static int rightDrivePort = 0;
   public static int extenderPort = 2;
-  public static int liftPort = 2;
+  public static int liftPort = 3;
 
   //Joystick buttons/axes
   public static int xboxPort = 0;
   public static int leftJoystick = 1;
   public static int rightJoystick = 4;
-  public static int Lthrust = 2;
-  public static int Rthrust = 3;
+  public static int leftBumper = 5;
+  public static int rightBumper = 6;
   public static int triggers = 2;
   public static int aButton = 2;
   public static int bButton = 3;

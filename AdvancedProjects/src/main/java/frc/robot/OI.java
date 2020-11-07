@@ -51,7 +51,6 @@ public class OI {
   public static arm m_arm;
   public OI(){
     m_drive = DriveTrain.getInstance();
-    m_arm= arm.getInstance();
     xbox= new XboxController(RobotMap.xboxPort);
   }
   
