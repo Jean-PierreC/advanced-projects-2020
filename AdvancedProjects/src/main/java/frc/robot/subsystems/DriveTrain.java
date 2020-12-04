@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
+import edu.wpi.first.wpilibj.Encoder;
 
 import frc.robot.RobotMap;
 import frc.robot.OI;
@@ -21,13 +22,15 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private PWMTalonSRX left = new PWMTalonSRX(RobotMap.leftDrivePort), right = new PWMTalonSRX(RobotMap.rightDrivePort), arm= new PWMTalonSRX(RobotMap.liftPort);
+  private PWMTalonSRX left = new PWMTalonSRX(RobotMap.leftDrivePort), right = new PWMTalonSRX(RobotMap.rightDrivePort);
   public static DriveTrain drive;
   private boolean downArm, upArm;
+  private Encoder leftEncoder = new Encoder(0,1), rightEncoder = new Encoder(2,3);
 
   public DriveTrain() {
     left.setInverted(true);
-    
+    leftEncoder.reset();
+    rightEncoder.reset();
   }
 
   public static DriveTrain getInstance() {
@@ -51,8 +54,16 @@ public class DriveTrain extends Subsystem {
     right.set(rightPow);
   }
   
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
 
- 
+  public double returnDistance() {
+    double leftDistance = (leftEncoder.getRaw()/4096) * 3.5;
+    double rightDistance = (rightEncoder.getRaw()/4096) * 3.5;
+    return (leftDistance + rightDistance)/2;
+  }
 
   @Override
   public void initDefaultCommand() {
@@ -62,17 +73,19 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void periodic() {
-    downArm= OI.returnController().getRawButton(RobotMap.rightBumper);
-    upArm= OI.returnController().getRawButton(RobotMap.rightBumper);
+    /*
+    downArm= OI.returnController().getRawButton(RobotMap.Lthrust);
+    upArm= OI.returnController().getRawButton(RobotMap.Rthrust);
     if(downArm){
-      arm.set(-.3);
+      arm.set(-.5);
     }
     if(downArm){
-      arm.set(.3);
+      arm.set(.5);
     }
     else{
       arm.set(0);
-    }
+    }*/
+   // Uarm(OI.returnController().getRawAxis(RobotMap.Lthrust) * 0.3);
     tankDrive(OI.returnController().getRawAxis(RobotMap.leftJoystick) * 0.3, OI.returnController().getRawAxis(RobotMap.rightJoystick) * 0.3);
   }
 }

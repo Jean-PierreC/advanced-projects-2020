@@ -8,12 +8,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.*;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -80,8 +82,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
-
+    String gameData = DriverStation.getInstance().getGameSpecificMessage();
+    
+    if (gameData.length() > 0) {
+      switch(gameData.charAt(0)) {
+        case '1':
+          m_autonomousCommand = new Path1();
+          break;
+        default:
+          //m_autonomousCommand = new Path1();
+          break;  
+      }
+    } else {
+      m_autonomousCommand = new Path1();
+    }
+    
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -94,6 +109,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.start();
     }
   }
+
 
   /**
    * This function is called periodically during autonomous.
